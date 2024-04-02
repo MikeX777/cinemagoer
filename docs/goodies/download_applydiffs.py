@@ -41,7 +41,7 @@ import logging
 
 from datetime import timedelta
 from ftplib import FTP
-from random import choice
+import secrets
 
 #############################################
 #           Script configuration            #
@@ -227,7 +227,7 @@ def applyDiffs():
             if not haveFTPConnection:
                 try:
                     # Choose a random ftp server from which to download the imdb diff file(s)
-                    ImdbDiffsFtpServer = choice(ImdbDiffsFtpServers)
+                    ImdbDiffsFtpServer = secrets.SystemRandom().choice(ImdbDiffsFtpServers)
                     ImdbDiffsFtp = ImdbDiffsFtpServer['url']
                     ImdbDiffsFtpPath = ImdbDiffsFtpServer['path']
 
