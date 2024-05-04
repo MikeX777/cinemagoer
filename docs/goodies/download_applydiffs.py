@@ -475,7 +475,7 @@ def applyDiffs():
     # and relink and reintegrate my shadow tables data into it
     if patchedOKWith is not None:
         logger.info("imdb lists are updated up to imdb diffs file %s" % patchedOKWith)
-        if RunAfterSuccessfulUpdate is not None:
+        if RunAfterSuccessfulUpdate != None:
             logger.info("Now running %s" % RunAfterSuccessfulUpdate)
             subprocess.call(RunAfterSuccessfulUpdate, shell=True)
 
