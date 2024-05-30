@@ -42,6 +42,7 @@ import logging
 from datetime import timedelta
 from ftplib import FTP
 from random import choice
+from security import safe_command
 
 #############################################
 #           Script configuration            #
@@ -301,7 +302,7 @@ def applyDiffs():
         if re.match(r".*\.list\.gz",f):
             try:
                 cmdUnGzip = unGzip % (os.path.join(ImdbListsPath,f), tmpListsPath)
-                subprocess.call(cmdUnGzip , shell=True)
+                safe_command.run(subprocess.call, cmdUnGzip , shell=True)
             except Exception as e:
                 logger.exception("Unable to uncompress imdb list file using: %s" % cmdUnGzip)
             numListFiles += 1
@@ -336,7 +337,7 @@ def applyDiffs():
         # unZip the diffs file to create a file diffs.tar
         try:
             cmdUnGzip = unGzip % (diffFilePath, tmpDiffsPath)
-            subprocess.call(cmdUnGzip, shell=True)
+            safe_command.run(subprocess.call, cmdUnGzip, shell=True)
         except Exception as e:
             logger.exception("Unable to unzip imdb diffs file using: %s" % cmdUnGzip)
             return
@@ -347,7 +348,7 @@ def applyDiffs():
         if os.path.isfile(tarFile):
             try:
                 cmdUnTar = unTar % (tarFile, tmpDiffsPath)
-                subprocess.call(cmdUnTar, shell=True)
+                safe_command.run(subprocess.call, cmdUnTar, shell=True)
             except Exception as e:
                 logger.exception("Unable to untar imdb diffs file using: %s" % cmdUnTar)
                 return
@@ -364,7 +365,7 @@ def applyDiffs():
                     logger.info("Patching imdb list file %s" % f)
                     try:
                         cmdApplyPatch = applyPatch % (os.path.join(tmpListsPath,f), os.path.join(tmpDiffsPath,f))
-                        patchStatus = subprocess.call(cmdApplyPatch, shell=True)
+                        patchStatus = safe_command.run(subprocess.call, cmdApplyPatch, shell=True)
                     except Exception as e:
                         logger.exception("Unable to patch imdb list file using: %s" % cmdApplyPatch)
                         patchStatus=-1
@@ -440,7 +441,7 @@ def applyDiffs():
         if re.match(r".*\.list",f):
             try:
                 cmdGZip = progGZip % os.path.join(tmpListsPath,f)
-                subprocess.call(cmdGZip, shell=True)
+                safe_command.run(subprocess.call, cmdGZip, shell=True)
             except Exception as e:
                 logger.exception("Unable to Gzip imdb list file using: %s" % cmdGZip)
                 break
