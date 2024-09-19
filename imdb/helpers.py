@@ -524,7 +524,7 @@ def parseXML(xml):
     """Parse a XML string, returning an appropriate object (usually an
     instance of a subclass of _Container."""
     import lxml.etree
-    return parseTags(lxml.etree.fromstring(xml))
+    return parseTags(lxml.etree.fromstring(xml, parser=lxml.etree.XMLParser(resolve_entities=False)))
 
 
 _re_akas_lang = re.compile('(?:[(])([a-zA-Z]+?)(?: title[)])')
